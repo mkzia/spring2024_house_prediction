@@ -20,14 +20,23 @@ with open('input_options.json') as f:
 st.write(options)
 
 if st.button('Predict'): 
-    print('IN button')
+    # payload = json.dumps({'inputs': options})
+    # response = requests.post(
+    #     url=f"http://159.203.68.179:5001/invocations",
+    #     data=payload,
+    #     headers={"Content-Type": "application/json"},
+    # )
 
-    payload = json.dumps({'inputs': options})
+    payload = json.dumps(options)
     response = requests.post(
-        url=f"http://159.203.68.179:5001/invocations",
+        url=f"http://159.203.132.225:8889/",
         data=payload,
         headers={"Content-Type": "application/json"},
     )
-    
-    prediction = response.json().get('predictions')[0]
+
+    response = response.json()
+    prediction = response.get('prediction')
+    model_name =response.get('model_name')
+    model_last_updated =response.get('model_last_updated')
     st.write(f'The predicted median house value is: ${prediction:,}')
+    st.write(f'Model {model_name} was last updated {model_last_updated}.')
